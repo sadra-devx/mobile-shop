@@ -1,17 +1,25 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect, useState } from "react";
+import { getProducts } from "./api/products";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getProducts();
+      console.log(data);
+      setProducts(data);
+    };
+
+    fetchData();
+  }, []);
 
   return (
-    <>
-     <h1 className='text-center'>mobile shop has started</h1>
-    </>
-  )
+    <div>
+      {/* فعلاً همینجوری بذار، بعداً کامپوننت واقعی می‌سازیم */}
+      <h1>Products count: {products.length}</h1>
+    </div>
+  );
 }
 
-export default App
+export default App;
