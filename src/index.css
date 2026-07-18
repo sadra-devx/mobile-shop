@@ -1,1 +1,7 @@
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css');
 @import "tailwindcss";
+
+body {
+  font-family: 'Estedad', sans-serif;
+  margin: 0;
+}
