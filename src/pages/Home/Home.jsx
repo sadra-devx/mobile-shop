@@ -1,8 +1,21 @@
+import Hero from "../../components/Hero/Hero"
 
 function Home() {
   return (
-    <div>
-      home
+    <div className="w-full">
+      <Hero />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getProducts } from "./api/products";
+import Hero from "./components/Hero/Hero";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -18,6 +19,7 @@ function App() {
     <div>
       {/* فعلاً همینجوری بذار، بعداً کامپوننت واقعی می‌سازیم */}
       <h1>Products count: {products.length}</h1>
+      <Hero />
     </div>
   );
 }
