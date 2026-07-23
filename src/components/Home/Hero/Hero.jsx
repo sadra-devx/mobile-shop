@@ -9,14 +9,20 @@ const stats = [
   { value: "۵۰هزار+", label: "مشتری راضی" },
   { value: "۴.۹", label: "امتیاز فروشگاه" },
 ];
-
+const STORAGE_KEY = "home-animations-played";
 export function Hero() {
   const stageRef = useRef(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(
+    () => sessionStorage.getItem(STORAGE_KEY) === "true"
+  );
 
   useEffect(() => {
-    const t = setTimeout(() => setLoaded(true), 50);
+    if (loaded) return;
+    const t = setTimeout(() => {
+      setLoaded(true);
+      sessionStorage.setItem(STORAGE_KEY, "true");
+    }, 50);
     return () => clearTimeout(t);
   }, []);
 
@@ -64,7 +70,7 @@ export function Hero() {
                 >
                   {word}
                   {i === 3 ? (
-                    <span className="text-indigo-600"> است</span>
+                    <span className="bg-gradient-to-l from-indigo-600 to-violet-600 bg-clip-text text-transparent"> است</span>
                   ) : (
                     " "
                   )}
@@ -83,13 +89,13 @@ export function Hero() {
           </p>
 
           <div
-            className={`mt-8 flex flex-wrap items-center gap-4 transition-all delay-500 duration-700 ${
+            className={`mt-8 flex flex-wrap items-center  gap-4 transition-all delay-500 duration-700 ${
               loaded ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
             }`}
           >
             <Link
               to="/products/mobile"
-              className="group flex items-center gap-2 rounded-2xl bg-indigo-600 px-6 py-3.5 text-base font-semibold text-white shadow-sm shadow-indigo-200 transition-all hover:bg-indigo-700 hover:shadow-md hover:shadow-indigo-300 active:scale-[0.98]"
+              className="group flex items-center gap-2 rounded-2xl bg-gradient-to-l from-indigo-600 to-violet-700 px-6 py-3.5 text-base font-semibold text-white shadow-sm shadow-indigo-200 transition-all hover:bg-indigo-700 hover:shadow-md hover:shadow-indigo-300 active:scale-[0.98]"
             >
               مشاهده محصولات
               <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />

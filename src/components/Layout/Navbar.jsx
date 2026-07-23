@@ -1,19 +1,7 @@
+import { ChevronLeft, Headphones, Laptop, Menu, Moon, Search, ShoppingCart, Smartphone, Sun, User, Watch, X } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router";
-import {
-  Search,
-  ShoppingCart,
-  User,
-  Menu,
-  X,
-  Smartphone,
-  Laptop,
-  Headphones,
-  Watch,
-  ChevronLeft,
-  Sun,
-  Moon,
-} from "lucide-react";
+import { Link, NavLink, useNavigate } from "react-router";
+
 
 const navLinks = [
   { label: "خانه", to: "/" },
@@ -47,7 +35,6 @@ export function Navbar() {
     const stored = localStorage.getItem("theme");
     if (stored === "dark") {
       document.documentElement.classList.add("dark");
-      setIsDark(true);
     }
   }, []);
 
@@ -136,7 +123,7 @@ export function Navbar() {
           className="flex shrink-0 items-center gap-2 transition-opacity hover:opacity-80"
         >
           <div className="grid h-9 w-9 place-items-center rounded-xl bg-indigo-600 text-white shadow-sm">
-            <Smartphone className="h-5 w-5" />
+            <Smartphone />
           </div>
           <span className="hidden text-2xl font-bold tracking-tight text-zinc-900 dark:text-white sm:inline">
             دیجی‌موبایل
@@ -146,15 +133,32 @@ export function Navbar() {
         {/* ناوبری دسکتاپ */}
         <nav className="hidden items-start gap-1  lg:flex">
           {navLinks.map((link) => (
-            <Link
-              key={link.to}
-              to={link.to}
-              className="group relative rounded-lg px-3 py-2 text-base font-medium text-zinc-600 transition-colors hover:text-indigo-600 dark:text-zinc-300 dark:hover:text-indigo-400"
-            >
-              {link.label}
-              <span className="absolute bottom-0.5 right-3 left-3 h-[1.5px] w-0 bg-indigo-600 transition-all duration-300 group-hover:w-[calc(100%-1.5rem)] dark:bg-indigo-400" />
-            </Link>
-          ))}
+  <NavLink
+    key={link.to}
+    to={link.to}
+    end={link.to === "/"}
+    className="group relative rounded-lg px-3 py-2 text-base font-medium transition-colors"
+  >
+    {({ isActive }) => (
+      <>
+        <span
+          className={
+            isActive
+              ? "text-indigo-600 dark:text-indigo-400"
+              : "text-zinc-600 group-hover:text-indigo-600 dark:text-zinc-300 dark:group-hover:text-indigo-400"
+          }
+        >
+          {link.label}
+        </span>
+        <span
+          className={`absolute bottom-0.5 right-3 left-3 h-[1.5px] bg-indigo-600 transition-all duration-300 dark:bg-indigo-400 ${
+            isActive ? "w-[calc(100%-1.5rem)]" : "w-0 group-hover:w-[calc(100%-1.5rem)]"
+          }`}
+        />
+      </>
+    )}
+  </NavLink>
+))}
         </nav>
 
         {/* آیکون‌ها + سرچ */}
