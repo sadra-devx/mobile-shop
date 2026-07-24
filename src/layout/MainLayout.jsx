@@ -1,15 +1,15 @@
 import { Outlet } from "react-router";
 import Navbar from "../components/Layout/Navbar";
+import { Footer } from "../components/Layout/Footer";
 
 function MainLayout() {
   return (
     <div>
-      {/* بعداً Navbar اینجا میاد */}
       <Navbar  />
       <main>
         <Outlet />
       </main>
-      {/* بعداً Footer اینجا میاد */}
+      <Footer />
     </div>
   );
 }
