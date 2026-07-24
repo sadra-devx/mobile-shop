@@ -32,6 +32,7 @@ export function FeaturedProducts() {
     el.scrollBy({ left: dir * cardWidth, behavior: "smooth" });
   };
 
+  // حرکت خودکار هر ۳ ثانیه
   useEffect(() => {
     if (loading || featured.length === 0) return;
     const interval = setInterval(() => {
