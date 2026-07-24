@@ -1,6 +1,8 @@
 // src/pages/Home/Home.jsx
+import { BrandStrip } from "../../components/Home/BrandStrip/BrandStrip";
 import { CategorySection } from "../../components/Home/CategorySection";
 import Hero from "../../components/Home/Hero/Hero";
+import { PromoBanner } from "../../components/Home/PromoBanner/PromoBanner";
 import { WhyUs } from "../../components/Home/WhyUs/WhyUs";
 import { FeaturedProducts } from "../../components/Product/FeaturedProducts";
 
@@ -10,7 +12,9 @@ function Home() {
       <Hero />
       <CategorySection />
       <FeaturedProducts />
+      <PromoBanner />
       <WhyUs />
+      <BrandStrip />
     </div>
   );
 }
