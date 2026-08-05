@@ -1,4 +1,3 @@
-// src/components/Product/ProductFilters.jsx
 import { toPersianDigits, formatPrice } from "../../utils/formatNumber";
 
 export function ProductFilters({
