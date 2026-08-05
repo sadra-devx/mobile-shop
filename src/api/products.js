@@ -9,3 +9,13 @@ export const getProducts = async () => {
     throw error;
   }
 };
+
+export const getProductById = async(id) => {
+  try {
+    const response = await api.get(`/products/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("خطا در دریافت محصول:", error);
+    throw error;
+  }
+}
