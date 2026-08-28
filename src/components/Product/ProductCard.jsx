@@ -38,7 +38,7 @@ export function ProductCard({ product }) {
 
   return (
     <Link
-      to={`/products/${id}`}
+      to={`/product/${id}`}
       className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm shadow-zinc-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-zinc-700 dark:bg-zinc-800"
     >
       {/* روبان "جدید" — روی کل کارت، نه فقط عکس */}

@@ -53,7 +53,7 @@ export default function ProductList() {
   const { ref: bodyRef, isInView: bodyInView } = useInView({ threshold: 0.05 });
 
   return (
-    <div className="mx-auto w-full mt-17 px-4 py-10 sm:px-6 lg:px-10">
+    <div className="mx-auto w-full mt-17 px-4 py-10 sm:px-6 lg:px-10 dark:bg-zinc-900">
      
       <div
         ref={headerRef}
