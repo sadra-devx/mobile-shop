@@ -1,7 +1,21 @@
-import { ChevronLeft, Headphones, Laptop, Menu, Moon, Search, ShoppingCart, Smartphone, Sun, User, Watch, X } from "lucide-react";
+import {
+  ChevronLeft,
+  Headphones,
+  Laptop,
+  Menu,
+  Moon,
+  Search,
+  ShoppingCart,
+  Smartphone,
+  Sun,
+  User,
+  Watch,
+  X,
+} from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { Link, NavLink, useNavigate } from "react-router";
-
+import { useBasket } from "../../context/useBasket";
+import { toPersianDigits } from "../../utils/formatNumber";
 
 const navLinks = [
   { label: "خانه", to: "/" },
@@ -29,6 +43,8 @@ export function Navbar() {
   const searchRef = useRef(null);
   const searchInputRef = useRef(null);
   const navigate = useNavigate();
+  const { basketItems } = useBasket();
+  const total = basketItems.reduce((sum, item) => sum + item.quantity, 0);
 
   /* ── تاریک/روشن ── */
   useEffect(() => {
@@ -84,7 +100,7 @@ export function Navbar() {
     ? suggestions.filter(
         (item) =>
           item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.category.toLowerCase().includes(searchQuery.toLowerCase())
+          item.category.toLowerCase().includes(searchQuery.toLowerCase()),
       )
     : suggestions;
 
@@ -109,14 +125,13 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 w-full transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 w-full transition-all duration-300  ${
         isScrolled
           ? "border-b border-zinc-200 bg-white/95 shadow-sm shadow-zinc-200/60 backdrop-blur-md dark:border-zinc-700 dark:bg-zinc-900/95 dark:shadow-zinc-900/60"
           : "border-b border-transparent bg-transparent"
       }`}
     >
       <div className="flex h-20 w-full items-center justify-between gap-4 px-4 sm:px-6 lg:px-10">
-
         {/* لوگو */}
         <Link
           to="/"
@@ -133,37 +148,38 @@ export function Navbar() {
         {/* ناوبری دسکتاپ */}
         <nav className="hidden items-start gap-1  lg:flex">
           {navLinks.map((link) => (
-  <NavLink
-    key={link.to}
-    to={link.to}
-    end={link.to === "/"}
-    className="group relative rounded-lg px-3 py-2 text-base font-medium transition-colors"
-  >
-    {({ isActive }) => (
-      <>
-        <span
-          className={
-            isActive
-              ? "text-indigo-600 dark:text-indigo-400"
-              : "text-zinc-600 group-hover:text-indigo-600 dark:text-zinc-300 dark:group-hover:text-indigo-400"
-          }
-        >
-          {link.label}
-        </span>
-        <span
-          className={`absolute bottom-0.5 right-3 left-3 h-[1.5px] bg-indigo-600 transition-all duration-300 dark:bg-indigo-400 ${
-            isActive ? "w-[calc(100%-1.5rem)]" : "w-0 group-hover:w-[calc(100%-1.5rem)]"
-          }`}
-        />
-      </>
-    )}
-  </NavLink>
-))}
+            <NavLink
+              key={link.to}
+              to={link.to}
+              end={link.to === "/"}
+              className="group relative rounded-lg px-3 py-2 text-base font-medium transition-colors"
+            >
+              {({ isActive }) => (
+                <>
+                  <span
+                    className={
+                      isActive
+                        ? "text-indigo-600 dark:text-indigo-400"
+                        : "text-zinc-600 group-hover:text-indigo-600 dark:text-zinc-300 dark:group-hover:text-indigo-400"
+                    }
+                  >
+                    {link.label}
+                  </span>
+                  <span
+                    className={`absolute bottom-0.5 right-3 left-3 h-[1.5px] bg-indigo-600 transition-all duration-300 dark:bg-indigo-400 ${
+                      isActive
+                        ? "w-[calc(100%-1.5rem)]"
+                        : "w-0 group-hover:w-[calc(100%-1.5rem)]"
+                    }`}
+                  />
+                </>
+              )}
+            </NavLink>
+          ))}
         </nav>
 
         {/* آیکون‌ها + سرچ */}
         <div className="flex  items-center justify-end gap-2 sm:gap-3">
-
           {/* ── سرچ دسکتاپ: دکمه‌ای که expand میشه ── */}
           <div ref={searchRef} className="relative hidden items-center md:flex">
             {/* ورودی متحرک */}
@@ -207,7 +223,11 @@ export function Navbar() {
               }`}
               aria-label="جستجو"
             >
-              {isSearchOpen ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
+              {isSearchOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Search className="h-5 w-5" />
+              )}
             </button>
 
             {/* dropdown پیشنهادها */}
@@ -234,7 +254,9 @@ export function Navbar() {
                           </div>
                           <div className="min-w-0 flex-1">
                             <p className="truncate font-medium">{item.title}</p>
-                            <p className="text-xs text-zinc-400 dark:text-zinc-500">{item.category}</p>
+                            <p className="text-xs text-zinc-400 dark:text-zinc-500">
+                              {item.category}
+                            </p>
                           </div>
                           <ChevronLeft className="h-4 w-4 shrink-0 text-zinc-400" />
                         </button>
@@ -253,7 +275,11 @@ export function Navbar() {
             className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-zinc-700 transition-colors hover:bg-zinc-900/5 dark:text-zinc-300 dark:hover:bg-white/10 md:hidden"
             aria-label="جستجو"
           >
-            {isSearchOpen ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
+            {isSearchOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Search className="h-5 w-5" />
+            )}
           </button>
 
           {/* دکمه dark/light mode */}
@@ -272,14 +298,16 @@ export function Navbar() {
 
           {/* سبد خرید */}
           <Link
-            to="/cart"
+            to="/basket"
             className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full text-zinc-700 transition-colors hover:bg-zinc-900/5 dark:text-zinc-300 dark:hover:bg-white/10"
             aria-label="سبد خرید"
           >
             <ShoppingCart className="h-5 w-5" />
-            <span className="absolute -top-0.5 -left-0.5 grid h-5 w-5 place-items-center rounded-full bg-indigo-600 text-[10px] font-bold text-white ring-2 ring-white dark:ring-zinc-900">
-              ۲
-            </span>
+            {total > 0 && (
+              <span className="absolute -top-0.5 -left-0.5 grid h-5 w-5 place-items-center rounded-full bg-indigo-600 text-[10px] font-bold text-white ring-2 ring-white dark:ring-zinc-900">
+                {toPersianDigits(total)}
+              </span>
+            )}
           </Link>
 
           {/* پروفایل */}
@@ -298,7 +326,11 @@ export function Navbar() {
             className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-zinc-700 transition-colors hover:bg-zinc-900/5 dark:text-zinc-300 dark:hover:bg-white/10 lg:hidden"
             aria-label="منوی موبایل"
           >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {isMenuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
           </button>
         </div>
       </div>

@@ -44,7 +44,7 @@ export function Footer() {
   const year = toPersianDigits(new Date().getFullYear() - 621);
 
   return (
-    <footer className="mt-10 border-t border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
+    <footer className="mt-10 border-t border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950/50">
       <div className="mx-auto w-full px-4 py-14 sm:px-6 lg:px-10">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-2">
