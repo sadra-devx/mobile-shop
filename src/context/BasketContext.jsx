@@ -37,7 +37,9 @@ export default function BasketProvider({ children }) {
   };
 
   const updateQuantity = (productId, quantity) => {
-    if (quantity < 1) return;
+    if (quantity == 0) return;
+    console.log("quntity has changed");
+    
     setBasketItems((prev) =>
       prev.map((item) =>
         item.id === productId ? { ...item, quantity } : item
@@ -45,7 +47,10 @@ export default function BasketProvider({ children }) {
     );
   };
 
-  const clearBasket = () => setBasketItems([]);
+  const clearBasket = () => {
+    setBasketItems([])
+    localStorage.removeItem("basket");
+  };
 
   const value = {
     basketItems,

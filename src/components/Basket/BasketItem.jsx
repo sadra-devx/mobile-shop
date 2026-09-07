@@ -42,7 +42,7 @@ export default function BasketItem({ product, onRemove, onQuantityChange }) {
 
             <div className="mx-1 flex items-center gap-2 border-x border-zinc-200 px-2 dark:border-zinc-700">
               <button
-                onClick={() => onQuantityChange(id, quantity + 1)}
+                onClick={() => onQuantityChange(id, quantity+1)}
                 className="p-1 text-zinc-600 hover:text-indigo-600 dark:text-zinc-300"
               >
                 <Plus className="h-3.5 w-3.5" />

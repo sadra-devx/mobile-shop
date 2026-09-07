@@ -87,23 +87,18 @@ export function Hero() {
           </p>
 
           <div
-            className={`mt-8 flex flex-wrap items-center gap-4 transition-all delay-500 duration-700 ${
+            className={`mt-8 w-100 items-center gap-4 transition-all delay-500 duration-700 ${
               loaded ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
             }`}
           >
             <Link
               to="/products/mobile"
-              className="group flex items-center gap-2 rounded-2xl bg-gradient-to-l from-indigo-600 to-violet-700 px-6 py-3.5 text-base font-semibold text-white shadow-sm shadow-indigo-200 transition-all hover:bg-indigo-700 hover:shadow-md hover:shadow-indigo-300 active:scale-[0.98] dark:shadow-indigo-950 dark:hover:shadow-indigo-900"
+              className="group flex items-center text-center justify-center gap-2 rounded-2xl bg-gradient-to-l from-indigo-600 to-violet-700 px-6 py-3.5 text-base font-semibold text-white shadow-sm shadow-indigo-200 transition-all hover:bg-indigo-700 hover:shadow-md hover:shadow-indigo-300 active:scale-[0.98] dark:shadow-indigo-950 dark:hover:shadow-indigo-900"
             >
               مشاهده محصولات
               <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
             </Link>
-            <Link
-              to="/products/offers"
-              className="rounded-2xl border border-zinc-200 bg-white px-6 py-3.5 text-base font-semibold text-zinc-700 transition-all hover:border-zinc-300 hover:bg-zinc-100 active:scale-[0.98] dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:border-zinc-600 dark:hover:bg-zinc-700"
-            >
-              پیشنهادهای ویژه
-            </Link>
+
           </div>
 
           <div
