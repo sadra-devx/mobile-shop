@@ -7,11 +7,16 @@ import "@fontsource/vazirmatn/400.css";
 import "@fontsource/vazirmatn/500.css";
 import "@fontsource/vazirmatn/700.css";
 import BasketProvider from "./context/BasketContext";
+import { AuthProvider } from "./context/AuthContext";
+import { Toaster } from 'sonner';
 
 createRoot(document.getElementById("root")).render(
+  <AuthProvider>
+<Toaster position="top-center" richColors dir="rtl" />
   <BasketProvider>
     <StrictMode>
       <RouterProvider router={router} />
     </StrictMode>
-  </BasketProvider>,
+  </BasketProvider>
+  </AuthProvider>
 );

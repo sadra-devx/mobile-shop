@@ -2,7 +2,7 @@ import { formatPrice, toPersianDigits } from "../../utils/formatNumber";
 
 export default function OrderSummary({ products }) {
   const itemsCount = products.reduce((sum, p) => sum + p.quantity, 0);
-
+  
   const originalTotal = products.reduce(
     (sum, p) => sum + p.price * p.quantity,
     0
@@ -53,9 +53,7 @@ export default function OrderSummary({ products }) {
         </div>
       </div>
 
-      <button className="mt-5 w-full rounded-xl bg-rose-600 py-3.5 font-medium text-white transition-colors hover:bg-rose-700 active:scale-[0.98]">
-        ثبت سفارش
-      </button>
+      
     </div>
   );
 }

@@ -16,6 +16,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link, NavLink, useNavigate } from "react-router";
 import { useBasket } from "../../context/useBasket";
 import { toPersianDigits } from "../../utils/formatNumber";
+import { useAuth } from "../../context/useAuth";
 
 const navLinks = [
   { label: "خانه", to: "/" },
@@ -44,6 +45,7 @@ export function Navbar() {
   const searchInputRef = useRef(null);
   const navigate = useNavigate();
   const { basketItems } = useBasket();
+  const {isAuthenticated , user} = useAuth()
   const total = basketItems.reduce((sum, item) => sum + item.quantity, 0);
 
   /* ── تاریک/روشن ── */
@@ -311,13 +313,20 @@ export function Navbar() {
           </Link>
 
           {/* پروفایل */}
-          <Link
-            to="/account"
+          {isAuthenticated ? 
+          <Link to="/profile" className="rounded w-20 h-10 flex  items-center text-center justify-center border cursor-pointer text-indigo-600 dark:text-indigo-400  ">
+            <User className="h-5 w-5" />
+            {user?.name}
+            </Link>
+           :
+           <Link
+            to="/profile"
             className="hidden h-10 w-10 shrink-0 place-items-center rounded-full text-zinc-700 transition-colors hover:bg-zinc-900/5 dark:text-zinc-300 dark:hover:bg-white/10 sm:grid"
             aria-label="حساب کاربری"
           >
             <User className="h-5 w-5" />
           </Link>
+          }
 
           {/* منو موبایل */}
           <button
@@ -386,13 +395,14 @@ export function Navbar() {
             ))}
           </nav>
           <div className="mt-3 flex items-center gap-3 border-t border-zinc-200 pt-3 dark:border-zinc-700">
-            <button
-              type="button"
+            <Link
+              to="/auth"
+              onClick={() => setIsMenuOpen(false)}
               className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-indigo-700"
             >
               <User className="h-4 w-4" />
               ورود / ثبت‌نام
-            </button>
+            </Link>
           </div>
         </div>
       )}

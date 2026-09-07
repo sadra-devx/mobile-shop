@@ -123,6 +123,7 @@ export default function ProductList() {
                     style={{ animationDelay: `${(index % PAGE_SIZE) * 40}ms` }}
                   >
                     <ProductCard product={product} />
+                    
                   </div>
                 ))}
               </div>

@@ -4,6 +4,8 @@ import ProductGallery from "../../components/Product/ProductGallery";
 import ProductInfo from "../../components/Product/ProductInfo";
 import ProductSpecs from "../../components/Product/ProductSpecs";
 import ProductRating from "../../components/Product/ProductRating";
+import ShippingPerksCard from "../../components/Product/ShippingPerksCard";
+import InstallmentCard from "../../components/Product/InstallmentCard";
 
 function ProductDetail() {
   const product = useLoaderData();
@@ -25,6 +27,14 @@ function ProductDetail() {
           <ProductSpecs specs={product.specs} />
         </div>
       </div>
+      <div className="flex flex-col gap-5 mt-5">
+
+      <ShippingPerksCard
+  perks={["۴ ارسال رایگان دیجی‌کالا", "۲ ارسال هایپرمارکت", "پشتیبانی اختصاصی"]}
+  onSubscribeClick={() => {}}
+/>
+<InstallmentCard price={product.price} />
+  </div>
     </div>
   );
 }
