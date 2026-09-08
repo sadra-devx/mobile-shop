@@ -86,7 +86,7 @@ export default function ProductList() {
               <button
                 key={opt.value}
                 onClick={() => setSort(opt.value)}
-                className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+                className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
                   sort === opt.value
                     ? "bg-indigo-600 text-white"
                     : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-700"

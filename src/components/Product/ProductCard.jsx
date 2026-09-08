@@ -1,6 +1,6 @@
 // src/components/product/ProductCard.jsx
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
 import { Star, ShoppingCart, ImageOff } from "lucide-react";
 
 function formatPrice(price) {
@@ -20,7 +20,7 @@ export function ProductCard({ product }) {
 
   const [imgLoaded, setImgLoaded] = useState(false);
   const [imgError, setImgError] = useState(false);
-
+  
   const numericPrice = Number(price);
   const numericDiscount = Number(discountPercent) || 0;
   const finalPrice = numericDiscount
