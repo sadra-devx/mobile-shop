@@ -9,15 +9,27 @@ import Auth from "../pages/Auth/Auth";
 import { ProtectedRoute } from "../context/ProtectedRoute";
 import Profile from "../pages/Profile/Profile";
 import { profileLoader } from "../pages/Profile/profileLoader";
+import { getApprovedCommentsByProduct } from "../api/comment";
 
 const productsLoader = async () => {
   const products = await getProducts();
   return products.filter((p) => p.isPublished);
 };
-const productLoader = async ({ params }) => {
-  const product = await getProductById(params.id);
-  return product;
-};
+
+const productDetailLoader = async({params}) => {
+  try {
+    const [comments , product ] = await Promise.all([
+      getApprovedCommentsByProduct(params.id),
+      getProductById(params.id),
+    ])
+    
+    return {comments , product}
+  } catch (err) {
+    console.log('خطا در دریافت نظران');
+    throw err
+  }
+  
+}
 
 const basketLoader = async () => {
   const stored = localStorage.getItem("basket");
@@ -47,7 +59,7 @@ export const router = createBrowserRouter([
       {
         path: "product/:id",
         element: <ProductDetail />,
-        loader: productLoader,
+        loader: productDetailLoader,
       },
       { path: "basket", element: <Basket />, loader: basketLoader },
       { path: "*", element: <div>صفحه پیدا نشد</div> },

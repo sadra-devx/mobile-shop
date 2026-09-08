@@ -314,9 +314,11 @@ export function Navbar() {
 
           {/* پروفایل */}
           {isAuthenticated ? 
-          <Link to="/profile" className="rounded w-20 h-10 flex  items-center text-center justify-center border cursor-pointer text-indigo-600 dark:text-indigo-400  ">
+          <Link to="/profile" className="rounded w-25 h-10 flex items-center text-center justify-center border cursor-pointer text-indigo-600 dark:text-indigo-400  ">
             <User className="h-5 w-5" />
-            {user?.name}
+            <span>
+            {user?.name.slice(0,7) + '...'}
+            </span>
             </Link>
            :
            <Link
@@ -324,7 +326,7 @@ export function Navbar() {
             className="hidden h-10 w-10 shrink-0 place-items-center rounded-full text-zinc-700 transition-colors hover:bg-zinc-900/5 dark:text-zinc-300 dark:hover:bg-white/10 sm:grid"
             aria-label="حساب کاربری"
           >
-            <User className="h-5 w-5" />
+            <User className="h-5 w-5 " />
           </Link>
           }
 
