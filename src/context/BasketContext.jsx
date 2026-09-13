@@ -38,7 +38,6 @@ export default function BasketProvider({ children }) {
 
   const updateQuantity = (productId, quantity) => {
     if (quantity == 0) return;
-    console.log("quntity has changed");
     
     setBasketItems((prev) =>
       prev.map((item) =>

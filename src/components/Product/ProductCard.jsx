@@ -1,7 +1,7 @@
-// src/components/product/ProductCard.jsx
 import { useState } from "react";
-import { Link, useParams } from "react-router";
-import { Star, ShoppingCart, ImageOff } from "lucide-react";
+import { Link } from "react-router";
+import { Star, ShoppingCart, ImageOff, Plus, Minus } from "lucide-react";
+import { useBasket } from "../../context/useBasket";
 
 function formatPrice(price) {
   return new Intl.NumberFormat("fa-IR").format(price);
@@ -20,7 +20,8 @@ export function ProductCard({ product }) {
 
   const [imgLoaded, setImgLoaded] = useState(false);
   const [imgError, setImgError] = useState(false);
-  
+  const { basketItems, addToBasket, removeFromBasket, updateQuantity } = useBasket();
+
   const numericPrice = Number(price);
   const numericDiscount = Number(discountPercent) || 0;
   const finalPrice = numericDiscount
@@ -30,10 +31,29 @@ export function ProductCard({ product }) {
   const thumbnail = images?.[0];
   const isNew = isRecentlyAdded(createdAt);
 
+  const basketItem = basketItems.find((item) => String(item.id) === String(id));
+  const quantityInBasket = basketItem?.quantity || 0;
+
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("افزودن به سبد:", id);
+    addToBasket(id);
+  };
+
+  const handleIncrease = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    updateQuantity(id, quantityInBasket + 1);
+  };
+
+  const handleDecrease = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (quantityInBasket <= 1) {
+      removeFromBasket(id);
+    } else {
+      updateQuantity(id, quantityInBasket - 1);
+    }
   };
 
   return (
@@ -41,7 +61,6 @@ export function ProductCard({ product }) {
       to={`/product/${id}`}
       className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm shadow-zinc-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-zinc-700 dark:bg-zinc-800"
     >
-      {/* روبان "جدید" — روی کل کارت، نه فقط عکس */}
       {isNew && (
         <div className="pointer-events-none absolute -left-11 top-5 z-20 w-40 -rotate-45">
           <div className="bg-indigo-600 py-1 text-center text-[11px] font-bold text-white shadow-md">
@@ -50,7 +69,6 @@ export function ProductCard({ product }) {
         </div>
       )}
 
-      {/* تصویر */}
       <div className="relative aspect-square overflow-hidden bg-zinc-100 dark:bg-zinc-900">
         {!imgLoaded && !imgError && (
           <div className="absolute inset-0 animate-pulse bg-zinc-200 dark:bg-zinc-700" />
@@ -96,7 +114,6 @@ export function ProductCard({ product }) {
           <span className="text-xs font-medium text-zinc-600 dark:text-zinc-300">{rating}</span>
         </div>
 
-        {/* قیمت + چیپ تخفیف کنار هم */}
         <div className="mt-3 flex-1">
           <p
             className={`text-xs text-zinc-400 line-through dark:text-zinc-500 ${
@@ -118,15 +135,37 @@ export function ProductCard({ product }) {
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={handleAddToCart}
-          disabled={!inStock}
-          className="mt-3 flex items-center justify-center gap-2 rounded-xl bg-indigo-600 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-zinc-200 disabled:text-zinc-400 dark:disabled:bg-zinc-700 dark:disabled:text-zinc-500"
-        >
-          <ShoppingCart className="h-4 w-4" />
-          افزودن به سبد
-        </button>
+        {quantityInBasket > 0 ? (
+          <div className="mt-3 flex items-center justify-between rounded-xl bg-zinc-100 py-1.5 text-indigo-600">
+            <button
+              type="button"
+              onClick={handleIncrease}
+              className="flex h-8 w-9 items-center justify-center"
+              aria-label="افزایش تعداد"
+            >
+              <Plus className="h-4 w-4 text-indigo-600" />
+            </button>
+            <span className=" font-semibold">{quantityInBasket}</span>
+            <button
+              type="button"
+              onClick={handleDecrease}
+              className="flex h-8 w-9 items-center justify-center"
+              aria-label="کاهش تعداد"
+            >
+              <Minus className="h-4 w-4 text-indigo-600" />
+            </button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={handleAddToCart}
+            disabled={!inStock}
+            className="mt-3 flex items-center justify-center gap-2 rounded-xl bg-indigo-600 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-zinc-200 disabled:text-zinc-400 dark:disabled:bg-zinc-700 dark:disabled:text-zinc-500"
+          >
+            <ShoppingCart className="h-4 w-4" />
+            افزودن به سبد
+          </button>
+        )}
       </div>
     </Link>
   );

@@ -13,6 +13,8 @@ import {
   X,
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link, NavLink, useNavigate } from "react-router";
 import { useBasket } from "../../context/useBasket";
 import { toPersianDigits } from "../../utils/formatNumber";
@@ -45,7 +47,7 @@ export function Navbar() {
   const searchInputRef = useRef(null);
   const navigate = useNavigate();
   const { basketItems } = useBasket();
-  const {isAuthenticated , user} = useAuth()
+  const { isAuthenticated, user } = useAuth();
   const total = basketItems.reduce((sum, item) => sum + item.quantity, 0);
 
   /* ── تاریک/روشن ── */
@@ -184,7 +186,6 @@ export function Navbar() {
         <div className="flex  items-center justify-end gap-2 sm:gap-3">
           {/* ── سرچ دسکتاپ: دکمه‌ای که expand میشه ── */}
           <div ref={searchRef} className="relative hidden items-center md:flex">
-            {/* ورودی متحرک */}
             <div
               className={`flex items-center overflow-hidden transition-all duration-300 ease-in-out ${
                 isSearchOpen ? "w-64 opacity-100 ml-1" : "w-0 opacity-0"
@@ -214,7 +215,6 @@ export function Navbar() {
               </div>
             </div>
 
-            {/* دکمه سرچ */}
             <button
               type="button"
               onClick={handleSearchToggle}
@@ -232,7 +232,6 @@ export function Navbar() {
               )}
             </button>
 
-            {/* dropdown پیشنهادها */}
             {isSearchOpen && showSuggestions && (
               <div className="absolute left-0 top-full mt-2 w-80 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-2 shadow-xl dark:border-zinc-700 dark:bg-zinc-800">
                 <p className="px-3 py-1.5 text-xs font-medium text-zinc-400 dark:text-zinc-500">
@@ -313,22 +312,23 @@ export function Navbar() {
           </Link>
 
           {/* پروفایل */}
-          {isAuthenticated ? 
-          <Link to="/profile" className="rounded w-25 h-10 flex items-center text-center justify-center border cursor-pointer text-indigo-600 dark:text-indigo-400  ">
-            <User className="h-5 w-5" />
-            <span>
-            {user?.name.slice(0,7) + '...'}
-            </span>
+          {isAuthenticated ? (
+            <Link
+              to="/profile"
+              className="rounded w-25 h-10 flex items-center text-center justify-center border cursor-pointer text-indigo-600 dark:text-indigo-400  "
+            >
+              <User className="h-5 w-5" />
+              <span>{user?.name.slice(0, 7) + "..."}</span>
             </Link>
-           :
-           <Link
-            to="/profile"
-            className="hidden h-10 w-10 shrink-0 place-items-center rounded-full text-zinc-700 transition-colors hover:bg-zinc-900/5 dark:text-zinc-300 dark:hover:bg-white/10 sm:grid"
-            aria-label="حساب کاربری"
-          >
-            <User className="h-5 w-5 " />
-          </Link>
-          }
+          ) : (
+            <Link
+              to="/profile"
+              className="hidden h-10 w-10 shrink-0 place-items-center rounded-full text-zinc-700 transition-colors hover:bg-zinc-900/5 dark:text-zinc-300 dark:hover:bg-white/10 sm:grid"
+              aria-label="حساب کاربری"
+            >
+              <User className="h-5 w-5 " />
+            </Link>
+          )}
 
           {/* منو موبایل */}
           <button
@@ -380,33 +380,70 @@ export function Navbar() {
         </div>
       )}
 
-      {/* ── منوی موبایل ── */}
-      {isMenuOpen && (
-        <div className="border-t border-zinc-200 bg-zinc-50 px-4 py-3 dark:border-zinc-700 dark:bg-zinc-900 lg:hidden">
-          <nav className="space-y-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
+      {/* ── منوی موبایل (Drawer, رندرشده روی document.body) ── */}
+      {createPortal(
+        <AnimatePresence>
+          {isMenuOpen && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-indigo-600 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-indigo-400"
+                className="fixed inset-0 z-40 bg-zinc-900/40 backdrop-blur-sm lg:hidden"
+              />
+              <motion.div
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "100%" }}
+                transition={{ type: "spring", damping: 28, stiffness: 300 }}
+                className="fixed inset-y-0 right-0 z-50 flex w-72 max-w-[80%] flex-col bg-white shadow-2xl dark:bg-zinc-900 lg:hidden"
               >
-                {link.label}
-                <ChevronLeft className="h-4 w-4 text-zinc-400" />
-              </Link>
-            ))}
-          </nav>
-          <div className="mt-3 flex items-center gap-3 border-t border-zinc-200 pt-3 dark:border-zinc-700">
-            <Link
-              to="/auth"
-              onClick={() => setIsMenuOpen(false)}
-              className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-indigo-700"
-            >
-              <User className="h-4 w-4" />
-              ورود / ثبت‌نام
-            </Link>
-          </div>
-        </div>
+                <div className="flex items-center justify-between border-b border-zinc-200 p-4 dark:border-zinc-800">
+                  <span className="flex items-center gap-2 text-lg font-bold text-zinc-800 dark:text-zinc-100">
+                    <Smartphone className="h-5 w-5 text-indigo-600" />
+                    دیجی‌موبایل
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="grid h-9 w-9 place-items-center rounded-full text-zinc-500 transition-colors hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                    aria-label="بستن منو"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+
+                <nav className="flex-1 space-y-1 overflow-y-auto p-4">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.to}
+                      to={link.to}
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-indigo-600 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-indigo-400"
+                    >
+                      {link.label}
+                      <ChevronLeft className="h-4 w-4 text-zinc-400" />
+                    </Link>
+                  ))}
+                </nav>
+
+                <div className="border-t border-zinc-200 p-4 dark:border-zinc-800">
+                  <Link
+                    to="/auth"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-indigo-700"
+                  >
+                    <User className="h-4 w-4" />
+                    ورود / ثبت‌نام
+                  </Link>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>,
+        document.body
       )}
     </header>
   );

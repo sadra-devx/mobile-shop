@@ -10,6 +10,7 @@ import { ProtectedRoute } from "../context/ProtectedRoute";
 import Profile from "../pages/Profile/Profile";
 import { profileLoader } from "../pages/Profile/profileLoader";
 import { getApprovedCommentsByProduct } from "../api/comment";
+import NotFound from "../pages/NotFound/NotFound";
 
 const productsLoader = async () => {
   const products = await getProducts();
@@ -62,7 +63,7 @@ export const router = createBrowserRouter([
         loader: productDetailLoader,
       },
       { path: "basket", element: <Basket />, loader: basketLoader },
-      { path: "*", element: <div>صفحه پیدا نشد</div> },
+      { path: "*", element:<NotFound /> },
       { path: "auth", element: <Auth /> },
       {
         element: <ProtectedRoute />,
