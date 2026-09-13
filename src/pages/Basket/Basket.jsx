@@ -23,10 +23,14 @@ function Basket() {
     revalidator.revalidate();
   };
 
-  const handleQuantityChange = (id, quantity) => {
+ const handleQuantityChange = (id, quantity) => {
+  if (quantity <= 0) {
+    removeFromBasket(id);
+  } else {
     updateQuantity(id, quantity);
-    revalidator.revalidate();
-  };
+  }
+  revalidator.revalidate();
+};
 
   const handleCheckOut = async () => {
     if (!isAuthenticated) {
@@ -48,7 +52,7 @@ function Basket() {
   };
   if (products.length === 0) {
     return (
-      <div className="mx-auto flex max-w-md flex-col items-center gap-3 px-4 py-20 text-center mt-15">
+      <div className="mx-auto flex max-w-md flex-col items-center gap-3 px-4 py-20 text-center mt-70">
         <ShoppingCart className="h-12 w-12 text-zinc-300 dark:text-zinc-600" />
         <p className="text-zinc-500 dark:text-zinc-400">سبد خرید شما خالیه</p>
       </div>

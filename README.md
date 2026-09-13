@@ -1,16 +1,64 @@
-# React + Vite
+# 📱 DigiMobile
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-featured, RTL Persian e-commerce storefront for mobile phones — built as a hands-on React learning project.
 
-Currently, two official plugins are available:
+![Home](docs/screenshots/home.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+**Companion project:** [mobile-shop-admin](https://github.com/sadra-devx/mobile-shop-admin) — shares the same `json-server` backend for order fulfillment & comment moderation.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Features
 
-## Expanding the ESLint configuration
+- 🏠 **Home** — hero, categories, featured products, promo banners
+- 🔍 **Product listing** — filters, sorting, infinite scroll
+- 📦 **Product detail** — gallery, specs, ratings, installment pricing
+- 🛒 **Basket** — persistent cart, on-card quantity stepper, live pricing
+- 💳 **Real checkout** — order creation tied to logged-in or guest users
+- 🔐 **Auth** — login/signup, protected routes, persistent sessions
+- 👤 **Profile** — editable info + full order history
+- 💬 **Comments** — star ratings, admin moderation, likes/dislikes, admin replies
+- 🌓 **Dark mode** + full RTL layout (Estedad font)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| Product Detail | Comments | Basket |
+|---|---|---|
+| ![Product](docs/screenshots/product-detail.png) | ![Comments](docs/screenshots/comments.png) | ![Basket](docs/screenshots/basket.png) |
+
+---
+
+## 🛠️ Tech Stack
+
+React 19 · Vite · React Router v7 (loaders) · Tailwind CSS v4 · axios · Sonner · Framer Motion · json-server `0.17.4`
+
+---
+
+## 🏗️ Architecture Highlights
+
+- Data fetching via **React Router loaders** (not `useEffect`), composed with `Promise.all` for multi-source pages
+- Auth & basket state persisted to `localStorage`, synced through React Context
+- Basket stores only `{ id, quantity }` — product data is always fetched fresh
+- Comments follow a **moderation pipeline**: `pending` → admin review → `approved`
+
+---
+
+## 🚀 Getting Started
+
+```bash
+git clone https://github.com/sadra-devx/mobile-shop.git
+cd mobile-shop
+npm install
+cp .env.example .env
+
+# in a separate terminal, from wherever db.json lives:
+npx json-server@0.17.4 --watch db.json --port 3001
+
+npm run dev
+```
+
+> ⚠️ `json-server` must stay pinned to `0.17.4` — later beta versions break the query filters this project relies on.
+
+---
+
+## 📄 License
+
+Personal learning project — not licensed for commercial use.

@@ -20,7 +20,6 @@ export function AuthProvider({ children }) {
 
   const login = async (phone, password) => {
     const { data } = await axiosInstance.get(`/customers?phone=${phone}`);
-    console.log("پاسخ سرور:", data); // ← موقت
     const found = data[0];
     if (!found || found.password !== password) {
       throw new Error("شماره موبایل یا رمز عبور اشتباه است");
